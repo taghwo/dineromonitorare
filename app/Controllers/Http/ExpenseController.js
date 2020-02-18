@@ -85,7 +85,19 @@ class ExpenseController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async show ({ params, response}) {
+    const expense = await Expense.find(params.expense)
+    if(!expense){
+     return response.status(404).json({
+       status:'failed',
+       message:'Sorry no record exist for that expense',
+     })
+     }
+      return response.status(200).json({
+         status:'success',
+         data:expense,
+       })
+     
   }
 
   /**

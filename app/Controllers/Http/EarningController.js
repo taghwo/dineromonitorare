@@ -49,12 +49,6 @@ class EarningController {
     earning.expected_earnings = request.input('expected_earnings')
     earning.estimated_savings = request.input('estimated_savings')
     earning.number_of_days_in_month = '31'
-  const user =  await User.create({
-      username:'Miils Doe',
-      password:'taghwo01',
-      email:'mdeniro7@gmail.com'
-    })
-
     earning.user_id = user.id
     await earning.save()
     session.flash({notification: 'New earning added'});
