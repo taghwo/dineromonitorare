@@ -1,0 +1,13 @@
+@layout('layout.app')
+{{--  @section({title: 'Add new earning'})
+@endsection  --}}
+@section('content')
+<p>New Earning</p>
+<form action="{{route('earning.store')}}" method="post">
+    {{csrfField()}}
+<input type="text" name="expected_earnings" value="{{old('expected_earnings','')}}">
+{{elIf('<span>$self</span>', getErrorFor('expected_earnings'), hasErrorFor('expected_earnings'))}}
+<input type="text" name="estimated_savings" value="{{old('estimated_savings','')}}">
+    <button type="submit">Save New Earning</button>
+</form>
+@endsection

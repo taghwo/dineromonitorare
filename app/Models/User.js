@@ -31,9 +31,24 @@ class User extends Model {
    *
    * @return {Object}
    */
+
+
+   static get hidde(){  
+    return ['password']
+   }
   tokens () {
     return this.hasMany('App/Models/Token')
   }
+  contact(){
+    return this.belongsTo('App/Models/Contact');
+}
+
+earnings () {
+  return this.hasMany('App/Models/Earning')
+}
+expenses () {
+  return this.hasMany('App/Models/Expense')
+}
 }
 
 module.exports = User
