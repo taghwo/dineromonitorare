@@ -97,7 +97,6 @@ class ExpenseController {
          status:'success',
          data:expense,
        })
-     
   }
 
   /**
