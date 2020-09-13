@@ -33,22 +33,20 @@ class User extends Model {
    */
 
 
-   static get hidde(){  
+   static get hidden(){  
     return ['password']
    }
   tokens () {
     return this.hasMany('App/Models/Token')
   }
-  contact(){
-    return this.belongsTo('App/Models/Contact');
-}
 
-earnings () {
-  return this.hasMany('App/Models/Earning')
-}
-expenses () {
-  return this.hasMany('App/Models/Expense')
-}
+  earnings () {
+    return this.hasMany('App/Models/Earning')
+  }
+  
+  expenses () {
+    return this.hasMany('App/Models/Expense')
+  }
 }
 
 module.exports = User

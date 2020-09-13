@@ -17,8 +17,7 @@
                         </form>
                     </div>
                 </div>
-                        <router-link :to="{name:'404'}">404</router-link>
-
+                    <router-link :to="{name:'404'}">404</router-link>
             </div>
         </div>
     </div>
@@ -35,7 +34,6 @@
         },
         mounted() {
             console.log('Component mounted.')
-
             this.User();
         },
         methods:{

@@ -23,18 +23,15 @@ Route.get('about',function(){
 Route.get('contacts','ContactController.index').as('contacts');
 
 Route.group(() => { 
+   Route.get('earnings', 'EarningController.index').as('earning.index').middleware(['auth']);
    Route.post('earning','EarningController.store').as('earning.store').validator('Earning').middleware(['auth'])
    Route.get('earning/:earning','EarningController.show').as('earning.show').middleware(['auth'])
    Route.put('earning/:earning','EarningController.update').as('earning.update').middleware(['auth'])
    Route.delete('earning/:earning','EarningController.delete').as('earning.delete').middleware(['auth'])
-   Route.delete('earning','EarningController.index').as('earning.index').middleware(['auth'])
- }).prefix('api/v1')
-
  
-Route.group(() => { 
    Route.post('expense','ExpenseController.store').as('expense.store').validator('Expenses').middleware(['auth'])
    Route.get('expense/:expense','ExpenseController.show').as('expense.show').middleware(['auth'])
-   Route.put('expense/:expense','ExpenseController.update').as('expense.update').middleware(['auth'])
+   Route.put('expense/:expense','ExpenseController.update').as('expense.update').validator('Expenses').middleware(['auth'])
    Route.delete('expense/:expense','ExpenseController.destroy').as('expense.delete').middleware(['auth'])
    Route.get('expenses','ExpenseController.index').as('expense.index').middleware(['auth'])
  }).prefix('api/v1')
@@ -49,5 +46,3 @@ Route.post('login', 'UserController.login').as('auth.login').middleware('guest')
 
 
 Route.get('users/:id', 'UserController.show').as('auth.user').middleware('auth')
-
-Route.any('*', ({ view }) => view.render('vueapp'))

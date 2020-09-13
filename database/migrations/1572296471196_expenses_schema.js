@@ -4,7 +4,9 @@
 const Schema = use('Schema')
 
 class ExpensesSchema extends Schema {
-  up () {
+  async up () {
+    const exists = await this.hasTable('expenses')
+    if(!exists) {
     this.create('expenses', (table) => {
       table.increments()
       table.integer('user_id').unsigned().references('id').inTable('users')     
@@ -13,6 +15,7 @@ class ExpensesSchema extends Schema {
       table.boolean('status').defaultTo('1')
       table.timestamps()
     })
+  }
   }
 
   down () {

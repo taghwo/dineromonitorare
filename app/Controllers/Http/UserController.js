@@ -2,39 +2,59 @@
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
+const Controller = require('./Controller');
 const User = use('App/Models/User.js')
-class UserController {
 
+class UserController extends Controller {
     async login ({ auth, response,request }) {
-        const { email, password } = request.all()
-        const userToken = await auth.withRefreshToken().attempt(email, password)//login user return refresh token with token
-        const user = auth.user
-        return response.status(200).send({
-            'status':'success',
-            'token':userToken,
-            'data':user
-        })
-      }
 
-      async register({auth,response,request}) {
-          const {email,username,password} = request.all()
-         
-          try{                      //create user
-           await User.create({
-            username:username,
-            email:email,
-            password:password
-          })
-        }catch(err){                //catch errors
-            return response.status(err.status).send(err)
-        }
-        const authUser = await auth.withRefreshToken().attempt(email,password)        
-        return  authUser
-        }
+        const credentials = request.only(['email','password'])
 
-        async authUser({auth}){
-            return  await auth.getUser()
+        try{
+            const userToken = await auth.withRefreshToken().attempt(credentials)
+
+            const user = await User.query().where('email', credentials.email).fetch()
+
+            return this.respondWithData(
+                {
+                data:{token:userToken,
+                     user: user}
+                },response, 'Logged in successfully')
+        } catch(err) {
+
+            return this.respondWithError('Login attempt failed , try again later',404,response);
+
         }
+    }
+
+    async register({auth,response,request}) {
+
+          const userData = request.only(['email','password','username'])
+
+          try{ 
+
+          const user =  await User.create(userData)
+
+          const token = await auth.withRefreshToken().attempt(request.input('email'),request.input('password'))  
+
+           return this.respondWithData(
+            {
+              data : {token,user},
+            },
+            response,
+            'Account created successfully'
+            )
+        }catch(err){  
+                    
+            return this.respondWithError('Account could not be created , try again later',404,response);
+
+        }
+    }
+
+    async authUser({auth}){
+
+        return  await auth.getUser()
+
+    }
 }
-
 module.exports = UserController

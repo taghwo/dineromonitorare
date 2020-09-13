@@ -3,7 +3,9 @@
 const Schema = use('Schema')
 
 class TokensSchema extends Schema {
-  up () {
+ async  up () {
+    const exists = await this.hasTable('tokens')
+    if(!exists) {
     this.create('tokens', table => {
       table.increments()
       table.integer('user_id').unsigned().references('id').inTable('users')
@@ -12,6 +14,7 @@ class TokensSchema extends Schema {
       table.boolean('is_revoked').defaultTo(false)
       table.timestamps()
     })
+  }
   }
 
   down () {
